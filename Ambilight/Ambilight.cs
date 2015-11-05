@@ -17,6 +17,13 @@ namespace Ambilight
     {
         SerialPort port = new SerialPort("COM3", 19200, Parity.None, 8, StopBits.One);
 
+        bool running = false;
+
+        //Clock for debugging
+        int timeSinceLast = 0;
+        DateTime lastTime = DateTime.Now;
+        DateTime currentTime = DateTime.Now;
+
         int red, green, blue, counter;
 
         public Ambilight()
@@ -27,41 +34,38 @@ namespace Ambilight
         private void Form1_Load(object sender, EventArgs e)
         {
             port.Open();
+            button2.IsAccessible = false;
 
-            while(true)
-            {
-                Bitmap bmpScreenshot = Screenshot();
-                String infoToSend = "";
+            Control.CheckForIllegalCrossThreadCalls = false;
+        }
 
-                for (int i = 0; i < 30; i++)
-                {
-                    Color sendColor = findMeanColor(i, bmpScreenshot);
-                    infoToSend += intToHex(sendColor.R) + intToHex(sendColor.G) + intToHex(sendColor.B); //+ "/";
-                    //Debug.WriteLine(i + " = "); //+ intToHex(i));
-                    //Debug.WriteLine("Red: " + sendColor.R + " = " + intToHex(sendColor.R));
-                    //Debug.WriteLine("Blue: " + sendColor.B + " = " + intToHex(sendColor.B));
-                    //Debug.WriteLine("Green: " + sendColor.G + " = " + intToHex(sendColor.G));
+        private void button1_Click(object sender, EventArgs e)
+        {
+            backgroundWorker1.RunWorkerAsync();
+            running = true;
+            button1.Enabled = false;
+            button2.Enabled = true;
+        }
 
-                    //sendOverPort(infoToSend);
-                    //System.Threading.Thread.Sleep(5);
-                }
-                
-                infoToSend += "/";
-                sendOverPort(infoToSend);
-
-                //Debug.WriteLine("Send: " + infoToSend);
-
-                System.Threading.Thread.Sleep(5);
-            }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            backgroundWorker1.CancelAsync();
+            running = false;
+            button1.Enabled = true;
+            button2.Enabled = false;
         }
 
         private Bitmap Screenshot()
         {
-            Bitmap bmpScreenshot = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+            Bitmap bmpScreenshot = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height / 3);
 
             Graphics g = Graphics.FromImage(bmpScreenshot);
 
-            g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size);
+            Size s = this.Size;
+            s.Height = Screen.PrimaryScreen.Bounds.Height / 3;
+            s.Width = Screen.PrimaryScreen.Bounds.Width;
+
+            g.CopyFromScreen(0, 0, 0, 0, s);
 
             return bmpScreenshot;
         }
@@ -76,25 +80,21 @@ namespace Ambilight
 
             for (int i = 0; i < (Screen.PrimaryScreen.Bounds.Width / 30); i+=5)
             {
-                for (int j = 0; j < Screen.PrimaryScreen.Bounds.Height / 3; j+=5)
+                for (int j = 0; j < Screen.PrimaryScreen.Bounds.Height / 3; j+=3)
                 {
-                    getColor = fromBmp.GetPixel(i + forLed * (Screen.PrimaryScreen.Bounds.Width / 30), j + Screen.PrimaryScreen.Bounds.Height / 10);
+                    getColor = fromBmp.GetPixel(i + forLed * (Screen.PrimaryScreen.Bounds.Width / 30), j);
 
-                    red += getColor.R;
-                    green += getColor.G;
-                    blue += getColor.B;
+                    int toDiv = (int)Math.Log(Convert.ToDouble(j), 100) + 1;
+
+                    red += (getColor.R / toDiv);
+                    green += (getColor.G / toDiv);
+                    blue += (getColor.B / toDiv);
 
                     counter++;
                 }
             }
 
-            counter = counter;
-
-            red = red / counter;
-            green = green / counter;
-            blue = blue / counter;
-
-            return Color.FromArgb(red, green, blue);
+            return Color.FromArgb(red / counter, green / counter, blue / counter);
         }
 
         private String intToHex(int number)
@@ -171,6 +171,56 @@ namespace Ambilight
         private void sendOverPort(String infoToSend)
         {            
             port.Write(infoToSend);
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                if (backgroundWorker1.CancellationPending)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                else
+                {
+                    Bitmap bmpScreenshot = Screenshot();
+                    String infoToSend = "";
+
+                    currentTime = DateTime.Now;
+                    TimeSpan span = currentTime - lastTime;
+                    lastTime = DateTime.Now;
+
+                    if (span.Milliseconds < 120)
+                    {
+                        System.Threading.Thread.Sleep(120 - span.Milliseconds);
+                    }
+
+                    label1.Text = span.Milliseconds.ToString();
+
+                    for (int i = 0; i < 30; i++)
+                    {
+                        Color sendColor = findMeanColor(i, bmpScreenshot);
+                        infoToSend += intToHex(sendColor.R) + intToHex(sendColor.G) + intToHex(sendColor.B);
+                        //Debug.WriteLine(i + " = "); //+ intToHex(i));
+                        //Debug.WriteLine("Red: " + sendColor.R + " = " + intToHex(sendColor.R));
+                        //Debug.WriteLine("Blue: " + sendColor.B + " = " + intToHex(sendColor.B));
+                        //Debug.WriteLine("Green: " + sendColor.G + " = " + intToHex(sendColor.G));
+
+                        //sendOverPort(infoToSend);
+                        //System.Threading.Thread.Sleep(5);
+                    }
+
+                    infoToSend += "/";
+                    sendOverPort(infoToSend);
+                    
+                    //Dispose garbage to prevent "momory leakage"
+                    System.GC.Collect();
+                    System.GC.WaitForPendingFinalizers();
+
+                    //System.Threading.Thread.Sleep(5);
+                }
+            }
         }
     }
 }

@@ -24,6 +24,9 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(60, PIN, NEO_GRB + NEO_KHZ800);
 // on a live circuit...if you must, connect GND first.
 
 void setup() {
+  
+  delay(1000);
+  
   // put your setup code here, to run once:
   #if defined (__AVR_ATtiny85__)
     if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
@@ -65,13 +68,13 @@ void updateOne(String code){
   blue = hexToInt(code[6], code[7]);
   
   strip.setPixelColor(pos, red, green, blue);
-  readyToRecieve = true;  
+  readyToRecieve = true;
   strip.show();
 }
 
 //Updates the whole strip
 void sendLight(String code){
-  int pos = 0, red = 0, green = 0, blue = 0;
+  byte red = 0, green = 0, blue = 0;
   
   for(int i = 30; i < 60; i++){
     red = hexToInt(code[0], code[1]);
