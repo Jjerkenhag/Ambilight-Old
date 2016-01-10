@@ -30,9 +30,26 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ambilight));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelFramerate = new System.Windows.Forms.Label();
+            this.buttonStartStop = new System.Windows.Forms.Button();
+            this.labelTopOffset = new System.Windows.Forms.Label();
+            this.labelCaptureHeight = new System.Windows.Forms.Label();
+            this.labelCaptureX = new System.Windows.Forms.Label();
+            this.buttonOffsetPlus = new System.Windows.Forms.Button();
+            this.buttonOffsetMinus = new System.Windows.Forms.Button();
+            this.buttonHeightMinus = new System.Windows.Forms.Button();
+            this.buttonHeightPlus = new System.Windows.Forms.Button();
+            this.buttonCaptureXMinus = new System.Windows.Forms.Button();
+            this.buttonCaptureXPlus = new System.Windows.Forms.Button();
+            this.buttonCaptureYMinus = new System.Windows.Forms.Button();
+            this.buttonCaptureYPlus = new System.Windows.Forms.Button();
+            this.labelCaptureY = new System.Windows.Forms.Label();
+            this.buttonShowCaptureArea = new System.Windows.Forms.Button();
+            this.textBoxOffset = new System.Windows.Forms.TextBox();
+            this.buttonAutoOffset = new System.Windows.Forms.Button();
+            this.labelBrightness = new System.Windows.Forms.Label();
+            this.buttonBrightnessPlus = new System.Windows.Forms.Button();
+            this.buttonBrightnessMinus = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // backgroundWorker1
@@ -41,52 +58,250 @@
             this.backgroundWorker1.WorkerSupportsCancellation = true;
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
-            // button1
+            // labelFramerate
             // 
-            this.button1.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button1.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.button1.Location = new System.Drawing.Point(100, 100);
-            this.button1.Margin = new System.Windows.Forms.Padding(0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 50);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Start";
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.labelFramerate.Location = new System.Drawing.Point(0, 0);
+            this.labelFramerate.Name = "labelFramerate";
+            this.labelFramerate.Size = new System.Drawing.Size(282, 30);
+            this.labelFramerate.TabIndex = 2;
+            this.labelFramerate.Text = "Framerate: 0";
+            this.labelFramerate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button2
+            // buttonStartStop
             // 
-            this.button2.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button2.ForeColor = System.Drawing.SystemColors.InfoText;
-            this.button2.Location = new System.Drawing.Point(100, 150);
-            this.button2.Margin = new System.Windows.Forms.Padding(0);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 50);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Stop";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.buttonStartStop.BackColor = System.Drawing.Color.Beige;
+            this.buttonStartStop.Location = new System.Drawing.Point(1, 220);
+            this.buttonStartStop.Name = "buttonStartStop";
+            this.buttonStartStop.Size = new System.Drawing.Size(140, 40);
+            this.buttonStartStop.TabIndex = 3;
+            this.buttonStartStop.Text = "Start";
+            this.buttonStartStop.UseVisualStyleBackColor = false;
+            this.buttonStartStop.Click += new System.EventHandler(this.buttonStartStop_Click);
             // 
-            // label1
+            // labelTopOffset
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(2, 50);
-            this.label1.MinimumSize = new System.Drawing.Size(280, 50);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(280, 50);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Framerate";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelTopOffset.BackColor = System.Drawing.Color.Transparent;
+            this.labelTopOffset.Location = new System.Drawing.Point(0, 30);
+            this.labelTopOffset.Name = "labelTopOffset";
+            this.labelTopOffset.Size = new System.Drawing.Size(282, 30);
+            this.labelTopOffset.TabIndex = 4;
+            this.labelTopOffset.Text = "Offset: 0px";
+            // 
+            // labelCaptureHeight
+            // 
+            this.labelCaptureHeight.BackColor = System.Drawing.Color.Transparent;
+            this.labelCaptureHeight.Location = new System.Drawing.Point(0, 60);
+            this.labelCaptureHeight.Name = "labelCaptureHeight";
+            this.labelCaptureHeight.Size = new System.Drawing.Size(282, 30);
+            this.labelCaptureHeight.TabIndex = 5;
+            this.labelCaptureHeight.Text = "Height: 1/5";
+            // 
+            // labelCaptureX
+            // 
+            this.labelCaptureX.BackColor = System.Drawing.Color.Transparent;
+            this.labelCaptureX.Location = new System.Drawing.Point(0, 90);
+            this.labelCaptureX.Name = "labelCaptureX";
+            this.labelCaptureX.Size = new System.Drawing.Size(282, 30);
+            this.labelCaptureX.TabIndex = 6;
+            this.labelCaptureX.Text = "Capture X: 10";
+            // 
+            // buttonOffsetPlus
+            // 
+            this.buttonOffsetPlus.BackColor = System.Drawing.Color.Beige;
+            this.buttonOffsetPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonOffsetPlus.Location = new System.Drawing.Point(221, 30);
+            this.buttonOffsetPlus.Name = "buttonOffsetPlus";
+            this.buttonOffsetPlus.Size = new System.Drawing.Size(30, 30);
+            this.buttonOffsetPlus.TabIndex = 7;
+            this.buttonOffsetPlus.Text = "+";
+            this.buttonOffsetPlus.UseVisualStyleBackColor = false;
+            this.buttonOffsetPlus.Click += new System.EventHandler(this.buttonOffsetPlus_Click);
+            // 
+            // buttonOffsetMinus
+            // 
+            this.buttonOffsetMinus.BackColor = System.Drawing.Color.Beige;
+            this.buttonOffsetMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonOffsetMinus.Location = new System.Drawing.Point(252, 30);
+            this.buttonOffsetMinus.Name = "buttonOffsetMinus";
+            this.buttonOffsetMinus.Size = new System.Drawing.Size(30, 30);
+            this.buttonOffsetMinus.TabIndex = 8;
+            this.buttonOffsetMinus.Text = "-";
+            this.buttonOffsetMinus.UseVisualStyleBackColor = false;
+            this.buttonOffsetMinus.Click += new System.EventHandler(this.buttonOffsetMinus_Click);
+            // 
+            // buttonHeightMinus
+            // 
+            this.buttonHeightMinus.BackColor = System.Drawing.Color.Beige;
+            this.buttonHeightMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonHeightMinus.Location = new System.Drawing.Point(252, 60);
+            this.buttonHeightMinus.Name = "buttonHeightMinus";
+            this.buttonHeightMinus.Size = new System.Drawing.Size(30, 30);
+            this.buttonHeightMinus.TabIndex = 10;
+            this.buttonHeightMinus.Text = "-";
+            this.buttonHeightMinus.UseVisualStyleBackColor = false;
+            this.buttonHeightMinus.Click += new System.EventHandler(this.buttonHeightMinus_Click);
+            // 
+            // buttonHeightPlus
+            // 
+            this.buttonHeightPlus.BackColor = System.Drawing.Color.Beige;
+            this.buttonHeightPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonHeightPlus.Location = new System.Drawing.Point(221, 60);
+            this.buttonHeightPlus.Name = "buttonHeightPlus";
+            this.buttonHeightPlus.Size = new System.Drawing.Size(30, 30);
+            this.buttonHeightPlus.TabIndex = 9;
+            this.buttonHeightPlus.Text = "+";
+            this.buttonHeightPlus.UseVisualStyleBackColor = false;
+            this.buttonHeightPlus.Click += new System.EventHandler(this.buttonHeightPlus_Click);
+            // 
+            // buttonCaptureXMinus
+            // 
+            this.buttonCaptureXMinus.BackColor = System.Drawing.Color.Beige;
+            this.buttonCaptureXMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCaptureXMinus.Location = new System.Drawing.Point(252, 90);
+            this.buttonCaptureXMinus.Name = "buttonCaptureXMinus";
+            this.buttonCaptureXMinus.Size = new System.Drawing.Size(30, 30);
+            this.buttonCaptureXMinus.TabIndex = 12;
+            this.buttonCaptureXMinus.Text = "-";
+            this.buttonCaptureXMinus.UseVisualStyleBackColor = false;
+            this.buttonCaptureXMinus.Click += new System.EventHandler(this.buttonCaptureXMinus_Click);
+            // 
+            // buttonCaptureXPlus
+            // 
+            this.buttonCaptureXPlus.BackColor = System.Drawing.Color.Beige;
+            this.buttonCaptureXPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCaptureXPlus.Location = new System.Drawing.Point(221, 90);
+            this.buttonCaptureXPlus.Name = "buttonCaptureXPlus";
+            this.buttonCaptureXPlus.Size = new System.Drawing.Size(30, 30);
+            this.buttonCaptureXPlus.TabIndex = 11;
+            this.buttonCaptureXPlus.Text = "+";
+            this.buttonCaptureXPlus.UseVisualStyleBackColor = false;
+            this.buttonCaptureXPlus.Click += new System.EventHandler(this.buttonCaptureXPlus_Click);
+            // 
+            // buttonCaptureYMinus
+            // 
+            this.buttonCaptureYMinus.BackColor = System.Drawing.Color.Beige;
+            this.buttonCaptureYMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCaptureYMinus.Location = new System.Drawing.Point(252, 120);
+            this.buttonCaptureYMinus.Name = "buttonCaptureYMinus";
+            this.buttonCaptureYMinus.Size = new System.Drawing.Size(30, 30);
+            this.buttonCaptureYMinus.TabIndex = 15;
+            this.buttonCaptureYMinus.Text = "-";
+            this.buttonCaptureYMinus.UseVisualStyleBackColor = false;
+            this.buttonCaptureYMinus.Click += new System.EventHandler(this.buttonCaptureYMinus_Click);
+            // 
+            // buttonCaptureYPlus
+            // 
+            this.buttonCaptureYPlus.BackColor = System.Drawing.Color.Beige;
+            this.buttonCaptureYPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonCaptureYPlus.Location = new System.Drawing.Point(221, 120);
+            this.buttonCaptureYPlus.Name = "buttonCaptureYPlus";
+            this.buttonCaptureYPlus.Size = new System.Drawing.Size(30, 30);
+            this.buttonCaptureYPlus.TabIndex = 14;
+            this.buttonCaptureYPlus.Text = "+";
+            this.buttonCaptureYPlus.UseVisualStyleBackColor = false;
+            this.buttonCaptureYPlus.Click += new System.EventHandler(this.buttonCaptureYPlus_Click);
+            // 
+            // labelCaptureY
+            // 
+            this.labelCaptureY.BackColor = System.Drawing.Color.Transparent;
+            this.labelCaptureY.Location = new System.Drawing.Point(0, 120);
+            this.labelCaptureY.Name = "labelCaptureY";
+            this.labelCaptureY.Size = new System.Drawing.Size(282, 30);
+            this.labelCaptureY.TabIndex = 13;
+            this.labelCaptureY.Text = "Capture Y: 10";
+            // 
+            // buttonShowCaptureArea
+            // 
+            this.buttonShowCaptureArea.BackColor = System.Drawing.Color.Beige;
+            this.buttonShowCaptureArea.Location = new System.Drawing.Point(143, 220);
+            this.buttonShowCaptureArea.Name = "buttonShowCaptureArea";
+            this.buttonShowCaptureArea.Size = new System.Drawing.Size(140, 40);
+            this.buttonShowCaptureArea.TabIndex = 16;
+            this.buttonShowCaptureArea.Text = "C-Area";
+            this.buttonShowCaptureArea.UseVisualStyleBackColor = false;
+            this.buttonShowCaptureArea.Click += new System.EventHandler(this.buttonShowCaptureArea_Click);
+            // 
+            // textBoxOffset
+            // 
+            this.textBoxOffset.Location = new System.Drawing.Point(90, 30);
+            this.textBoxOffset.MaximumSize = new System.Drawing.Size(100, 30);
+            this.textBoxOffset.MinimumSize = new System.Drawing.Size(100, 30);
+            this.textBoxOffset.Name = "textBoxOffset";
+            this.textBoxOffset.Size = new System.Drawing.Size(100, 38);
+            this.textBoxOffset.TabIndex = 17;
+            this.textBoxOffset.Text = "0";
+            this.textBoxOffset.TextChanged += new System.EventHandler(this.textBoxOffset_TextChanged);
+            // 
+            // buttonAutoOffset
+            // 
+            this.buttonAutoOffset.BackColor = System.Drawing.Color.Beige;
+            this.buttonAutoOffset.Location = new System.Drawing.Point(1, 180);
+            this.buttonAutoOffset.Name = "buttonAutoOffset";
+            this.buttonAutoOffset.Size = new System.Drawing.Size(281, 40);
+            this.buttonAutoOffset.TabIndex = 18;
+            this.buttonAutoOffset.Text = "Auto Offset";
+            this.buttonAutoOffset.UseVisualStyleBackColor = false;
+            this.buttonAutoOffset.Click += new System.EventHandler(this.buttonAutoOffset_Click);
+            // 
+            // labelBrightness
+            // 
+            this.labelBrightness.BackColor = System.Drawing.Color.Transparent;
+            this.labelBrightness.Location = new System.Drawing.Point(0, 150);
+            this.labelBrightness.Name = "labelBrightness";
+            this.labelBrightness.Size = new System.Drawing.Size(282, 30);
+            this.labelBrightness.TabIndex = 19;
+            this.labelBrightness.Text = "Brightness: 100";
+            // 
+            // buttonBrightnessPlus
+            // 
+            this.buttonBrightnessPlus.BackColor = System.Drawing.Color.Beige;
+            this.buttonBrightnessPlus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBrightnessPlus.Location = new System.Drawing.Point(221, 150);
+            this.buttonBrightnessPlus.Name = "buttonBrightnessPlus";
+            this.buttonBrightnessPlus.Size = new System.Drawing.Size(30, 30);
+            this.buttonBrightnessPlus.TabIndex = 20;
+            this.buttonBrightnessPlus.Text = "+";
+            this.buttonBrightnessPlus.UseVisualStyleBackColor = false;
+            this.buttonBrightnessPlus.Click += new System.EventHandler(this.buttonBrightnessPlus_Click);
+            // 
+            // buttonBrightnessMinus
+            // 
+            this.buttonBrightnessMinus.BackColor = System.Drawing.Color.Beige;
+            this.buttonBrightnessMinus.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBrightnessMinus.Location = new System.Drawing.Point(252, 150);
+            this.buttonBrightnessMinus.Name = "buttonBrightnessMinus";
+            this.buttonBrightnessMinus.Size = new System.Drawing.Size(30, 30);
+            this.buttonBrightnessMinus.TabIndex = 21;
+            this.buttonBrightnessMinus.Text = "-";
+            this.buttonBrightnessMinus.UseVisualStyleBackColor = false;
+            this.buttonBrightnessMinus.Click += new System.EventHandler(this.buttonBrightnessMinus_Click);
             // 
             // Ambilight
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.BackColor = System.Drawing.Color.PapayaWhip;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonBrightnessMinus);
+            this.Controls.Add(this.buttonBrightnessPlus);
+            this.Controls.Add(this.labelBrightness);
+            this.Controls.Add(this.buttonAutoOffset);
+            this.Controls.Add(this.textBoxOffset);
+            this.Controls.Add(this.buttonShowCaptureArea);
+            this.Controls.Add(this.buttonCaptureYMinus);
+            this.Controls.Add(this.buttonCaptureYPlus);
+            this.Controls.Add(this.labelCaptureY);
+            this.Controls.Add(this.buttonCaptureXMinus);
+            this.Controls.Add(this.buttonCaptureXPlus);
+            this.Controls.Add(this.buttonHeightMinus);
+            this.Controls.Add(this.buttonHeightPlus);
+            this.Controls.Add(this.buttonOffsetMinus);
+            this.Controls.Add(this.buttonOffsetPlus);
+            this.Controls.Add(this.labelCaptureX);
+            this.Controls.Add(this.labelCaptureHeight);
+            this.Controls.Add(this.labelTopOffset);
+            this.Controls.Add(this.buttonStartStop);
+            this.Controls.Add(this.labelFramerate);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -94,6 +309,7 @@
             this.MaximizeBox = false;
             this.Name = "Ambilight";
             this.Text = "Ambilight";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -103,9 +319,26 @@
         #endregion
 
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelFramerate;
+        private System.Windows.Forms.Button buttonStartStop;
+        private System.Windows.Forms.Label labelTopOffset;
+        private System.Windows.Forms.Label labelCaptureHeight;
+        private System.Windows.Forms.Label labelCaptureX;
+        private System.Windows.Forms.Button buttonOffsetPlus;
+        private System.Windows.Forms.Button buttonOffsetMinus;
+        private System.Windows.Forms.Button buttonHeightMinus;
+        private System.Windows.Forms.Button buttonHeightPlus;
+        private System.Windows.Forms.Button buttonCaptureXMinus;
+        private System.Windows.Forms.Button buttonCaptureXPlus;
+        private System.Windows.Forms.Button buttonCaptureYMinus;
+        private System.Windows.Forms.Button buttonCaptureYPlus;
+        private System.Windows.Forms.Label labelCaptureY;
+        private System.Windows.Forms.Button buttonShowCaptureArea;
+        private System.Windows.Forms.TextBox textBoxOffset;
+        private System.Windows.Forms.Button buttonAutoOffset;
+        private System.Windows.Forms.Label labelBrightness;
+        private System.Windows.Forms.Button buttonBrightnessPlus;
+        private System.Windows.Forms.Button buttonBrightnessMinus;
 
     }
 }

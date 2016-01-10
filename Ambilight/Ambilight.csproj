@@ -50,6 +50,12 @@
     <Compile Include="Ambilight.Designer.cs">
       <DependentUpon>Ambilight.cs</DependentUpon>
     </Compile>
+    <Compile Include="CaptureArea.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CaptureArea.Designer.cs">
+      <DependentUpon>CaptureArea.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Ambilight.resx">
