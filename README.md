@@ -6,6 +6,7 @@ The program is written in C# for simple testing and the code for the Arduino is 
 Only 30 LED's are used on a 60-LED strip, hence the odd code.
 
 Current stats:
-- Very small noticeable delay on the lights.
+- No delay.
 - All LED's update simultaneously.
-- Program crashes due to Bitmap and Graphics overload, too many pictures per second. Need to find substitute.
+- About 100 UPS
+- Customizable
