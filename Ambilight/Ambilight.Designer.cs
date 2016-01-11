@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ambilight));
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.labelFramerate = new System.Windows.Forms.Label();
@@ -50,6 +51,11 @@
             this.labelBrightness = new System.Windows.Forms.Label();
             this.buttonBrightnessPlus = new System.Windows.Forms.Button();
             this.buttonBrightnessMinus = new System.Windows.Forms.Button();
+            this.notifyIconAmbilight = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // backgroundWorker1
@@ -223,11 +229,11 @@
             // 
             // textBoxOffset
             // 
+            this.textBoxOffset.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxOffset.Location = new System.Drawing.Point(90, 30);
-            this.textBoxOffset.MaximumSize = new System.Drawing.Size(100, 30);
-            this.textBoxOffset.MinimumSize = new System.Drawing.Size(100, 30);
+            this.textBoxOffset.MaxLength = 4;
             this.textBoxOffset.Name = "textBoxOffset";
-            this.textBoxOffset.Size = new System.Drawing.Size(100, 38);
+            this.textBoxOffset.Size = new System.Drawing.Size(100, 30);
             this.textBoxOffset.TabIndex = 17;
             this.textBoxOffset.Text = "0";
             this.textBoxOffset.TextChanged += new System.EventHandler(this.textBoxOffset_TextChanged);
@@ -276,6 +282,36 @@
             this.buttonBrightnessMinus.UseVisualStyleBackColor = false;
             this.buttonBrightnessMinus.Click += new System.EventHandler(this.buttonBrightnessMinus_Click);
             // 
+            // notifyIconAmbilight
+            // 
+            this.notifyIconAmbilight.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIconAmbilight.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIconAmbilight.Icon")));
+            this.notifyIconAmbilight.Text = "Ambilight";
+            this.notifyIconAmbilight.Visible = true;
+            this.notifyIconAmbilight.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
             // Ambilight
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -303,14 +339,16 @@
             this.Controls.Add(this.buttonStartStop);
             this.Controls.Add(this.labelFramerate);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.MaximizeBox = false;
             this.Name = "Ambilight";
             this.Text = "Ambilight";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -339,6 +377,10 @@
         private System.Windows.Forms.Label labelBrightness;
         private System.Windows.Forms.Button buttonBrightnessPlus;
         private System.Windows.Forms.Button buttonBrightnessMinus;
+        private System.Windows.Forms.NotifyIcon notifyIconAmbilight;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 
     }
 }

@@ -6,4 +6,3 @@ C:\Users\Joakim Jerkenhag\Documents\Visual Studio 2013\Projects\Ambilight\Ambili
 C:\Users\Joakim Jerkenhag\Documents\Visual Studio 2013\Projects\Ambilight\Ambilight\obj\Release\Ambilight.csproj.GenerateResource.Cache
 C:\Users\Joakim Jerkenhag\Documents\Visual Studio 2013\Projects\Ambilight\Ambilight\obj\Release\Ambilight.exe
 C:\Users\Joakim Jerkenhag\Documents\Visual Studio 2013\Projects\Ambilight\Ambilight\obj\Release\Ambilight.pdb
-C:\Users\Joakim Jerkenhag\Documents\Visual Studio 2013\Projects\Ambilight\Ambilight\obj\Release\Ambilight.csprojResolveAssemblyReference.cache

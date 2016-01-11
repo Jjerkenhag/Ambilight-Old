@@ -15,22 +15,20 @@ namespace Ambilight
 {
     public partial class Ambilight : Form
     {
-        SerialPort port = new SerialPort("COM4", 115200, Parity.None, 8, StopBits.One);
-
+        //Connection to Arduino
+        SerialPort port = new SerialPort("COM15", 115200, Parity.None, 8, StopBits.One);
         bool running = false;
-        bool showingArea = false;
 
-        //Clock for debugging
+        //Updates Per Second
         DateTime lastTime = DateTime.Now;
-        DateTime currentTime = DateTime.Now;
         int loop = 0;
 
-        int red, green, blue, counter; //This if for calculating the average color.
-
         byte[] infoToSend = new byte[200];
+        int red, green, blue, counter; //This if for calculating the average color.
         int placeAt = 0;
 
-        static int NUM_LEDS = 18;
+        //Variables to calculate the gathering of color data
+        static int NUM_LEDS = 30;
         int BRIGHTNESS = 100;
         int CAPTURE_X = 10;
         int CAPTURE_Y = 10;
@@ -38,10 +36,12 @@ namespace Ambilight
         int JUMP_Y = 5;
         int OFFSET_HEIGHT = 0;
         int CAPTURE_HEIGHT = 5; //Portion of the screen to capture.
-        int LIGHT_WIDTH = Screen.PrimaryScreen.Bounds.Width / NUM_LEDS;
+        int LIGHT_WIDTH = (Screen.PrimaryScreen.Bounds.Width + 1100) / NUM_LEDS;
         int LIGHT_HEIGHT = Screen.PrimaryScreen.Bounds.Height / 5; //Set 5 as standard.
-        
+
+        //Black rect to display the color gathering
         CaptureArea captArea = new CaptureArea();
+        bool showingArea = false;
 
         public Ambilight()
         {
@@ -51,8 +51,32 @@ namespace Ambilight
         private void Form1_Load(object sender, EventArgs e)
         {
             port.Open();
+            notifyIconAmbilight.Visible = true;
 
             Control.CheckForIllegalCrossThreadCalls = false;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (e.CloseReason == CloseReason.UserClosing)
+            {
+                notifyIconAmbilight.Visible = true;
+                notifyIconAmbilight.BalloonTipTitle = "Minimized";
+                notifyIconAmbilight.BalloonTipText = "Ambilight is still running minimized.";
+                notifyIconAmbilight.ShowBalloonTip(500);
+                this.Hide();
+                e.Cancel = true;
+            }
+        }
+        
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
 
         private void buttonStartStop_Click(object sender, EventArgs e)
@@ -76,7 +100,7 @@ namespace Ambilight
         {
             if (textBoxOffset.Text != "")
             {
-                if (int.Parse(textBoxOffset.Text) >= 0 && int.Parse(textBoxOffset.Text) + LIGHT_HEIGHT < Screen.PrimaryScreen.Bounds.Height)
+                if (int.Parse(textBoxOffset.Text) >= 0 && int.Parse(textBoxOffset.Text) + LIGHT_HEIGHT <= Screen.PrimaryScreen.Bounds.Height)
                 {
                     OFFSET_HEIGHT = int.Parse(textBoxOffset.Text);
                     captArea.Bounds = new Rectangle(0, OFFSET_HEIGHT, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height / CAPTURE_HEIGHT);
@@ -127,14 +151,17 @@ namespace Ambilight
 
         private void buttonHeightMinus_Click(object sender, EventArgs e)
         {
-            if ((Screen.PrimaryScreen.Bounds.Height / (CAPTURE_HEIGHT - 1)) + OFFSET_HEIGHT < Screen.PrimaryScreen.Bounds.Height)
+            if (CAPTURE_HEIGHT > 1)
             {
-                CAPTURE_HEIGHT--;
-                labelCaptureHeight.Text = "Height: 1/" + CAPTURE_HEIGHT;
-                captArea.Bounds = new Rectangle(0, OFFSET_HEIGHT, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height / CAPTURE_HEIGHT);
+                if ((Screen.PrimaryScreen.Bounds.Height / (CAPTURE_HEIGHT - 1)) + OFFSET_HEIGHT <= Screen.PrimaryScreen.Bounds.Height)
+                {
+                    CAPTURE_HEIGHT--;
+                    labelCaptureHeight.Text = "Height: 1/" + CAPTURE_HEIGHT;
+                    captArea.Bounds = new Rectangle(0, OFFSET_HEIGHT, Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height / CAPTURE_HEIGHT);
+                }
+                else
+                    MessageBox.Show("Would go out of bounds.");
             }
-            else
-                MessageBox.Show("Would go out of bounds.");
         }
 
         private void buttonCaptureXPlus_Click(object sender, EventArgs e)
@@ -183,13 +210,13 @@ namespace Ambilight
 
         private void buttonBrightnessPlus_Click(object sender, EventArgs e)
         {
-            if (BRIGHTNESS <= 90)
+            if (BRIGHTNESS < 200)
             {
                 BRIGHTNESS += 10;
                 labelBrightness.Text = "Brightness: " + BRIGHTNESS.ToString();
             }
             else
-                MessageBox.Show("Can't be brighter than 100%");
+                MessageBox.Show("That's the limit.");
         }
 
         private void buttonBrightnessMinus_Click(object sender, EventArgs e)
@@ -278,12 +305,12 @@ namespace Ambilight
         {
             LIGHT_HEIGHT = Screen.PrimaryScreen.Bounds.Height / CAPTURE_HEIGHT; //To update the capture portion.
 
-            Bitmap bmpScreenshot = new Bitmap(Screen.PrimaryScreen.Bounds.Width, LIGHT_HEIGHT);
+            Bitmap bmpScreenshot = new Bitmap(Screen.PrimaryScreen.Bounds.Width + 1100, LIGHT_HEIGHT);
 
             Graphics g = Graphics.FromImage(bmpScreenshot);
 
             Size s = this.Size;
-            s.Width = Screen.PrimaryScreen.Bounds.Width;
+            s.Width = Screen.PrimaryScreen.Bounds.Width + 1100;
             s.Height = LIGHT_HEIGHT;
 
             g.CopyFromScreen(0, OFFSET_HEIGHT, 0, 0, s);
@@ -319,6 +346,14 @@ namespace Ambilight
             return Color.FromArgb(red / counter, green / counter, blue / counter);
         }
 
+        private int addBrightness(int toSend) 
+        {
+            int sendBack = toSend * BRIGHTNESS / 100;
+            if (sendBack > 255)
+                sendBack = 255;
+            return sendBack;
+        }
+
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             while (true)
@@ -344,9 +379,9 @@ namespace Ambilight
                     for (int i = 0; i < NUM_LEDS; i++)
                     {
                         Color sendColor = findMeanColor(i, bmpScreenshot);
-                        infoToSend[placeAt++] = Convert.ToByte(sendColor.R * BRIGHTNESS / 100);
-                        infoToSend[placeAt++] = Convert.ToByte(sendColor.G * BRIGHTNESS / 100);
-                        infoToSend[placeAt++] = Convert.ToByte(sendColor.B * BRIGHTNESS / 100);
+                        infoToSend[placeAt++] = Convert.ToByte(addBrightness(sendColor.R));
+                        infoToSend[placeAt++] = Convert.ToByte(addBrightness(sendColor.G));
+                        infoToSend[placeAt++] = Convert.ToByte(addBrightness(sendColor.B));
                     }
 
                     loop++;
