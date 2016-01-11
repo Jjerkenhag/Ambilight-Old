@@ -53,8 +53,9 @@
             this.buttonBrightnessMinus = new System.Windows.Forms.Button();
             this.notifyIconAmbilight = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.formOpenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.onoffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -288,29 +289,38 @@
             this.notifyIconAmbilight.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIconAmbilight.Icon")));
             this.notifyIconAmbilight.Text = "Ambilight";
             this.notifyIconAmbilight.Visible = true;
-            this.notifyIconAmbilight.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.notifyIconAmbilight.BalloonTipClicked += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.notifyIconAmbilight.DoubleClick += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
+            this.formOpenToolStripMenuItem,
+            this.onoffToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 92);
             // 
-            // openToolStripMenuItem
+            // formOpenToolStripMenuItem
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.formOpenToolStripMenuItem.Name = "formOpenToolStripMenuItem";
+            this.formOpenToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.formOpenToolStripMenuItem.Text = "Minimize";
+            this.formOpenToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // onoffToolStripMenuItem
+            // 
+            this.onoffToolStripMenuItem.Name = "onoffToolStripMenuItem";
+            this.onoffToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.onoffToolStripMenuItem.Text = "Start";
+            this.onoffToolStripMenuItem.Click += new System.EventHandler(this.buttonStartStop_Click);
             // 
             // Ambilight
             // 
@@ -379,8 +389,9 @@
         private System.Windows.Forms.Button buttonBrightnessMinus;
         private System.Windows.Forms.NotifyIcon notifyIconAmbilight;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem formOpenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem onoffToolStripMenuItem;
 
     }
 }

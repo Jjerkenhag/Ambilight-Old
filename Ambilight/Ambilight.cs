@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
+using System.IO;
 using System.Threading;
 using System.Diagnostics;
 
@@ -18,6 +19,7 @@ namespace Ambilight
         //Connection to Arduino
         SerialPort port = new SerialPort("COM15", 115200, Parity.None, 8, StopBits.One);
         bool running = false;
+        bool formOpen = false;
 
         //Updates Per Second
         DateTime lastTime = DateTime.Now;
@@ -51,6 +53,7 @@ namespace Ambilight
         private void Form1_Load(object sender, EventArgs e)
         {
             port.Open();
+            formOpen = true;
             notifyIconAmbilight.Visible = true;
 
             Control.CheckForIllegalCrossThreadCalls = false;
@@ -60,22 +63,35 @@ namespace Ambilight
         {
             if (e.CloseReason == CloseReason.UserClosing)
             {
-                notifyIconAmbilight.Visible = true;
                 notifyIconAmbilight.BalloonTipTitle = "Minimized";
-                notifyIconAmbilight.BalloonTipText = "Ambilight is still running minimized.";
+                notifyIconAmbilight.BalloonTipText = "Ambilight is still running. Click to open.";
                 notifyIconAmbilight.ShowBalloonTip(500);
                 this.Hide();
+                formOpen = false;
                 e.Cancel = true;
             }
         }
         
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Show();
+            if (!formOpen)
+            {
+                this.Show();
+                formOpen = true;
+                formOpenToolStripMenuItem.Text = "Minimize";
+            }
+            else
+            {
+                this.Hide();
+                formOpen = false;
+                formOpenToolStripMenuItem.Text = "Open";
+            }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            notifyIconAmbilight.Dispose();
+            port.Dispose();
             Application.Exit();
         }
 
@@ -86,12 +102,14 @@ namespace Ambilight
                 backgroundWorker1.RunWorkerAsync();
                 running = true;
                 buttonStartStop.Text = "Stop";
+                onoffToolStripMenuItem.Text = "Stop";
             }
             else
             {
                 backgroundWorker1.CancelAsync();
                 running = false;
                 buttonStartStop.Text = "Start";
+                onoffToolStripMenuItem.Text = "Start";
             }
 
         }
